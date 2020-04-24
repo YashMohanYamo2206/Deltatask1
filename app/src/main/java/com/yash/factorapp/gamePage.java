@@ -1,5 +1,7 @@
 package com.yash.factorapp;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -7,13 +9,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +29,7 @@ import java.util.Vector;
 
 public class gamePage extends AppCompatActivity {
     int factorNumber;
-    private static final long START_TIME_IN_MILLIS = 10000;
+    private static final long START_TIME_IN_MILLIS = 5000;
     CountDownTimer countDownTimer;
     private boolean streakBroken = false,TimerRunning = false;
     private long TimeLeftInMillis = START_TIME_IN_MILLIS;
@@ -57,8 +61,12 @@ public class gamePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_page);
 
+
+
         Intent intent=getIntent();
         factorNumber = intent.getIntExtra("factorNumber",4);
+
+
 
 
         tv_highest=findViewById(R.id.tv_highest);
@@ -73,27 +81,40 @@ public class gamePage extends AppCompatActivity {
         quit = findViewById(R.id.btn_quit);
 
 
+
+
         SharedPreferences HighestStreak = this.getSharedPreferences("HighestScore",MODE_PRIVATE);
         highestStreak=HighestStreak.getInt("highestStreak",0);
 
+
+
         tv_highest.setText("Highest streak :- " + highestStreak);
+
+
+
 
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!TimerRunning){
                 Intent intent = new Intent(gamePage.this, MainActivity.class);
-                startActivity(intent);}
+                startActivity(intent);
+                finish();}
                 else{
                     pauseTimer();
                     resetTimer();
                     Intent intent = new Intent(gamePage.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
 
+
+
+        updateCountDownText();
     }
+
     @SuppressLint("SetTextI18n")
 
 
@@ -130,16 +151,17 @@ public class gamePage extends AppCompatActivity {
                 Collections.shuffle(rand);
 
                 num1.setVisibility(View.VISIBLE);
-                num1.setText(String.valueOf((Integer) rand.get(0)));
+                num1.setText(String.valueOf(rand.get(0)));
                 num2.setVisibility(View.VISIBLE);
-                num2.setText(String.valueOf((Integer) rand.get(1)));
+                num2.setText(String.valueOf(rand.get(1)));
                 num3.setVisibility(View.VISIBLE);
-                num3.setText(String.valueOf((Integer) rand.get(2)));
+                num3.setText(String.valueOf(rand.get(2)));
 
-                generateFactorsClickCount++;
+                /*generateFactorsClickCount++;
                 if (generateFactorsClickCount > 1) {
                     resetTimer();
-                }
+                }*/
+                resetTimer();
                 startTimer();
 
                 num1.setEnabled(true);
@@ -175,7 +197,15 @@ public class gamePage extends AppCompatActivity {
             num3.setEnabled(false);
             generateFactors.setText("CONTINUE");
             pauseTimer();
+            if(TimerRunning){
+                countDownTimer.cancel();
+                TimerRunning=false;
+            }
             generateFactors.setEnabled(true);
+
+
+
+
             if(!streakBroken){
                 streak+=1;
                 if(streak>highestStreak){
@@ -191,9 +221,13 @@ public class gamePage extends AppCompatActivity {
                 streakBroken=false;
             }
         }
+
+
+
+
         else{
             streakBroken=true;
-            streak=0;
+            streak=1;
             pauseTimer();
             num1.setEnabled(false);
             Toast.makeText(this, "wrong answer!!! Here's your right answer..!!", Toast.LENGTH_SHORT).show();
@@ -209,8 +243,6 @@ public class gamePage extends AppCompatActivity {
                 num2.setEnabled(false);
                 num3.setEnabled(false);
             }
-
-            rightScore--;
             generateFactors.setText("CONTINUE");
             generateFactors.setEnabled(true);
 
@@ -231,6 +263,10 @@ public class gamePage extends AppCompatActivity {
             generateFactors.setText("CONTINUE");
             pauseTimer();
             generateFactors.setEnabled(true);
+
+
+
+
             if(!streakBroken){
                 streak+=1;
                 if(streak>highestStreak){
@@ -247,9 +283,13 @@ public class gamePage extends AppCompatActivity {
             }
 
         }
+
+
+
+
         else{
             streakBroken=true;
-            streak=0;
+            streak=1;
             pauseTimer();
             num2.setEnabled(false);
             Toast.makeText(this, "wrong answer!!! Here's your right answer..!!", Toast.LENGTH_SHORT).show();
@@ -265,8 +305,6 @@ public class gamePage extends AppCompatActivity {
                 num1.setEnabled(false);
                 num3.setEnabled(false);
             }
-
-            rightScore--;
             generateFactors.setText("CONTINUE");
             generateFactors.setEnabled(true);
 
@@ -287,6 +325,11 @@ public class gamePage extends AppCompatActivity {
             pauseTimer();
             generateFactors.setEnabled(true);
             generateFactors.setText("CONTINUE");
+
+
+
+
+
             if(!streakBroken){
                 streak+=1;
                 if(streak>highestStreak){
@@ -303,9 +346,14 @@ public class gamePage extends AppCompatActivity {
             }
 
         }
+
+
+
+
+
         else{
             streakBroken=true;
-            streak=0;
+            streak=1;
             pauseTimer();
             num3.setEnabled(false);
             Toast.makeText(gamePage.this, "wrong answer!!! Here's your right answer..!!", Toast.LENGTH_SHORT).show();
@@ -321,12 +369,16 @@ public class gamePage extends AppCompatActivity {
                 num2.setEnabled(false);
                 num1.setEnabled(false);
             }
-            rightScore--;
             generateFactors.setText("CONTINUE");
             generateFactors.setEnabled(true);
 
         }
     }
+
+
+
+
+
 
 
     private void startTimer() {
@@ -342,37 +394,75 @@ public class gamePage extends AppCompatActivity {
             public void onFinish() {
                 TimerRunning = false;
                 resetTimer();
-                if(factorNumber % Integer.parseInt(String.valueOf(num1.getText())) !=0 && factorNumber % Integer.parseInt(String.valueOf(num2.getText())) !=0){
+
+
+
+
+                if(factorNumber % Integer.parseInt(String.valueOf(num1.getText())) !=0 && factorNumber % Integer.parseInt(String.valueOf(num2.getText()) ) !=0){
+                   if( num1.isEnabled())
+                   {
                     num1.setEnabled(false);
                     num2.setEnabled(false);
                     num3.setTextColor(Color.GREEN);
-                    num3.setEnabled(false);
-
+                       Toast.makeText(gamePage.this, "No answer..!! Here's your right answer", Toast.LENGTH_SHORT).show();
+                       num3.setEnabled(false);
+                   // v.vibrate(800);
+                    cl.setBackgroundColor(Color.RED);
+                   }
                 }
+
+
+
+
                 if(factorNumber % Integer.parseInt(String.valueOf(num2.getText())) !=0 && factorNumber % Integer.parseInt(String.valueOf(num3.getText())) !=0){
+                    if( num1.isEnabled()){
                     num3.setEnabled(false);
                     num2.setEnabled(false);
                     num1.setTextColor(Color.GREEN);
                     num1.setEnabled(false);
+                        Toast.makeText(gamePage.this, "No answer..!! Here's your right answer", Toast.LENGTH_SHORT).show();
+
+                        cl.setBackgroundColor(Color.RED);
+                  //  v.vibrate(800);
+                        }
+
                 }
+
+
+
+
                 if(factorNumber % Integer.parseInt(String.valueOf(num3.getText())) !=0 && factorNumber % Integer.parseInt(String.valueOf(num1.getText())) !=0){
-                    num1.setEnabled(false);
+                    if( num1.isEnabled())
+                    {num1.setEnabled(false);
                     num3.setEnabled(false);
                     num2.setTextColor(Color.GREEN);
                     num2.setEnabled(false);
+                        Toast.makeText(gamePage.this, "No answer..!! Here's your right answer", Toast.LENGTH_SHORT).show();
+
+                        cl.setBackgroundColor(Color.RED);
+                  //  v.vibrate(800);
+                    }
                 }
+
+
+
+
                 streakBroken=true;
                 streak=0;
-                generateFactors.setText("QUIT");
+                generateFactors.setText("CONTINUE");
                 generateFactors.setEnabled(true);
-                Toast.makeText(gamePage.this, "No answer..!! Here's your right answer", Toast.LENGTH_SHORT).show();
-                cl.setBackgroundColor(Color.RED);
+
+                //cl.setBackgroundColor(Color.RED);
                 v.vibrate(800);
 
             }
         }.start();
 
     }
+
+
+
+
 
     private void updateCountDownText() {
         int seconds = (int) (TimeLeftInMillis / 1000) ;
@@ -382,6 +472,10 @@ public class gamePage extends AppCompatActivity {
     }
 
 
+
+
+
+
     private void resetTimer() {
         TimeLeftInMillis = START_TIME_IN_MILLIS;
         updateCountDownText();
@@ -389,9 +483,122 @@ public class gamePage extends AppCompatActivity {
     }
 
 
+
+
+
+
     private void pauseTimer() {
         countDownTimer.cancel();
         TimerRunning = false;
+    }
+
+
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle b) {
+        super.onSaveInstanceState(b);
+        try {
+
+            ColorDrawable color = (ColorDrawable) cl.getBackground();
+            int colorid = color.getColor();
+
+            ColorStateList num1_color = num1.getTextColors();
+            int num1_color_id = num1_color.getDefaultColor();
+
+            ColorStateList num2_color = num2.getTextColors();
+            int num2_color_id = num2_color.getDefaultColor();
+
+            ColorStateList num3_color = num3.getTextColors();
+            int num3_color_id = num3_color.getDefaultColor();
+
+
+
+            b.putInt("num1visiblity",num1.getVisibility());
+            b.putLong("timeleftinmillis", TimeLeftInMillis);
+            b.putString("num1", String.valueOf(num1.getText()));
+            b.putBoolean("num1enablity", num1.isEnabled());
+            b.putInt("num1_color_id", num1_color_id);
+
+
+
+            b.putInt("num2visiblity",num2.getVisibility());
+            b.putString("num2", String.valueOf(num2.getText()));
+            b.putBoolean("num2enablity", num2.isEnabled());
+            b.putInt("num2_color_id", num2_color_id);
+
+
+
+
+            b.putInt("num3visiblity",num3.getVisibility());
+            b.putString("num3", String.valueOf(num3.getText()));
+            b.putBoolean("num3enablity", num3.isEnabled());
+            b.putInt("num3_color_id", num3_color_id);
+
+
+
+
+            b.putBoolean("timerrunning", TimerRunning);
+            b.putInt("backgroundclr", colorid);
+            b.putString("generatefactortext", generateFactors.getText().toString());
+            b.putBoolean("generateenabled", generateFactors.isEnabled());
+
+        }
+        catch (Exception e){
+
+        }
+
+
+
+}
+
+
+
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle b) {
+        super.onRestoreInstanceState(b);
+            generateFactors.setText(b.getString("generatefactortext","generate factor"));
+            generateFactors.setEnabled(b.getBoolean("generateenabled", true));
+
+
+
+            num1.setVisibility(b.getInt("num1visiblity",0x00000004));
+            num1.setText(b.getString("num1",null));
+            num1.setEnabled(b.getBoolean("num1enablity",false));
+            num1.setTextColor(b.getInt("num1_color_id"));
+
+
+
+
+            num2.setVisibility(b.getInt("num2visiblity",0x00000004));
+            num2.setText(b.getString("num2",null));
+            num2.setEnabled(b.getBoolean("num2enablity",false));
+            num2.setTextColor(b.getInt("num2_color_id"));
+
+
+
+
+            num3.setVisibility(b.getInt("num3visiblity",0x00000004));
+            num3.setText(b.getString("num3",null));
+            num3.setEnabled(b.getBoolean("num3enablity",false));
+            num3.setTextColor(b.getInt("num3_color_id"));
+
+
+
+
+            cl.setBackgroundColor(b.getInt("backgroundclr"));
+            TimeLeftInMillis=b.getLong("timeleftinmillis",5000);
+            TimerRunning=b.getBoolean("timerrunning",false);
+            updateCountDownText();
+
+            if(TimerRunning){
+                startTimer();
+            }
+
+
     }
 
 

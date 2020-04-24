@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/colorbg"
     tools:context=".MainActivity">
 
     <Button
@@ -13,6 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="START"
+        android:background="@drawable/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -21,8 +23,11 @@
         app:layout_constraintVertical_bias="0.955" />
 
     <TextView
+        android:fontFamily="cursive"
+        android:textColor="#0009ff"
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:text="FACTOR APP"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
@@ -49,6 +54,7 @@
         android:layout_width="352dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
+        android:textStyle="bold"
         android:text="1.) To generate factors type the number and press on generate factors."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
@@ -58,6 +64,7 @@
     <TextView
         android:id="@+id/textView5"
         android:layout_width="352dp"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="212dp"
@@ -72,12 +79,15 @@
         android:id="@+id/textView6"
         android:layout_width="352dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="152dp"
-        android:text="3.) If wrong answer is choosen press on QUIT to come back to main page. "
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="156dp"
+        android:text="3.) To QUIT/NEW GAME press on the button and type the number again."
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
         android:id="@+id/ET_NUMBER"
@@ -90,5 +100,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ET_NUMBER"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="5 SECONDS IS ALL YOU HAVE FOR 1 QUESTION."
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/ET_NUMBER"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

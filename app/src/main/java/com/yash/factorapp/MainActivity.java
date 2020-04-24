@@ -3,15 +3,18 @@ package com.yash.factorapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Button NewGame;
     EditText number;
+    RelativeLayout rl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, gamePage.class);
                     intent.putExtra("factorNumber", factorNumber);
                     startActivity(intent);
-                }
+                    finish();
+                    number.setHint("ENTER NUMBER");
+                    }
                 catch (Exception e) {
                     Toast.makeText(MainActivity.this, "ERROR..!!! ENTER A NUMBER.", Toast.LENGTH_SHORT).show();
                 }
