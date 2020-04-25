@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
                     number.setHint("ENTER NUMBER");
                     }
                 catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "ERROR..!!! ENTER A NUMBER.", Toast.LENGTH_SHORT).show();
+                    number.setError("ENTER NUMBER"); // use either Toast or setError..!! setError() looks more aesthetic to me lol..!
+                    // Toast.makeText(MainActivity.this, "ERROR..!!! ENTER A NUMBER.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
