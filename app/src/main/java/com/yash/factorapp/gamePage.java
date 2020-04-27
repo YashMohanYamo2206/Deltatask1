@@ -552,11 +552,12 @@ public class gamePage extends AppCompatActivity {
 
 
 }
-
-
-
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        countDownTimer.cancel();
+    }
+    
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle b) {
         super.onRestoreInstanceState(b);
